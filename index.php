@@ -131,10 +131,11 @@
                 <table class="w-full text-left">
                     <thead>
                         <tr class="bg-slate-50 border-b border-slate-200">
-                            <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Nama</th>
-                            <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">No. Rumah</th>
-                            <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Iuran</th>
-                            <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Status Pembayaran</th>
+                            <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Nama & Rumah</th>
+                            <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-blue-600">Kas</th>
+                            <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-green-600">Sampah</th>
+                            <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Total</th>
+                            <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
                             <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right no-print">Aksi</th>
                         </tr>
                     </thead>
@@ -229,35 +230,35 @@
             body.innerHTML = filtered.map(w => {
                 const idx = dataWarga.findIndex(item => item.id === w.id);
                 const isLunas = w.pembayaran?.[key];
+                const total = w.kas + w.sampah;
                 return `
                     <tr class="hover:bg-slate-50 transition-colors">
                         <td class="px-6 py-4">
                             <div class="font-bold text-slate-800">${w.nama}</div>
-                            <div class="text-[10px] text-slate-400 uppercase font-semibold">Warga Aktif</div>
+                            <div class="text-xs text-slate-400 font-medium">${w.rumah}</div>
                         </td>
-                        <td class="px-6 py-4 text-slate-600 font-medium">${w.rumah}</td>
-                        <td class="px-6 py-4 font-semibold text-slate-700">${formatRupiah(w.kas + w.sampah)}</td>
+                        <td class="px-6 py-4 text-slate-600 font-medium">${formatRupiah(w.kas)}</td>
+                        <td class="px-6 py-4 text-slate-600 font-medium">${formatRupiah(w.sampah)}</td>
+                        <td class="px-6 py-4 font-bold text-slate-700">${formatRupiah(total)}</td>
                         <td class="px-6 py-4">
-                            <button onclick="toggleBayar(${idx})" class="group flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold transition-all ${isLunas ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700 hover:bg-amber-200'}">
-                                <span class="w-2 h-2 rounded-full ${isLunas ? 'bg-green-500' : 'bg-amber-500 animate-pulse'}"></span>
-                                ${isLunas ? 'LUNAS' : 'BAYAR SEKARANG'}
+                            <button onclick="toggleBayar(${idx})" class="group flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold transition-all ${isLunas ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700 hover:bg-amber-200'}">
+                                <span class="w-1.5 h-1.5 rounded-full ${isLunas ? 'bg-green-500' : 'bg-amber-500 animate-pulse'}"></span>
+                                ${isLunas ? 'LUNAS' : 'BELUM'}
                             </button>
                         </td>
                         <td class="px-6 py-4 text-right no-print">
-                            <div class="flex justify-end gap-4">
-                                <!-- Aksi Edit: Hanya Ikon & Teks tanpa Kotak Kolom -->
+                            <div class="flex justify-end gap-3">
                                 <button onclick="openModal(${idx})" 
                                     class="flex items-center gap-1.5 text-blue-600 hover:text-blue-800 transition-colors" 
                                     title="Ubah Data">
                                     <i data-lucide="edit-3" class="w-4 h-4"></i>
-                                    <span class="text-xs font-bold uppercase">Edit</span>
+                                    <span class="text-[10px] font-bold uppercase">Edit</span>
                                 </button>
-                                <!-- Aksi Hapus: Hanya Ikon & Teks tanpa Kotak Kolom -->
                                 <button onclick="deleteWarga(${idx})" 
                                     class="flex items-center gap-1.5 text-red-600 hover:text-red-800 transition-colors" 
                                     title="Hapus Data">
                                     <i data-lucide="trash-2" class="w-4 h-4"></i>
-                                    <span class="text-xs font-bold uppercase">Hapus</span>
+                                    <span class="text-[10px] font-bold uppercase">Hapus</span>
                                 </button>
                             </div>
                         </td>
